@@ -6,6 +6,8 @@
     "dev": "vite dev --port 3000",
     "generate-routes": "tsr generate",
     "build": "vite build",
+    "registry:build": "shadcn build",
+    "registry:validate": "shadcn registry validate ./registry.json",
     "preview": "vite preview",
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx}\"",
