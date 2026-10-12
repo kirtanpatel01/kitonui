@@ -15,13 +15,34 @@ export const Route = createRootRoute({
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "TanStack Start Starter",
+        title: "Kiton UI — Modern shadcn Component Registry",
+      },
+      {
+        property: "og:image",
+        content: "/kitonui-icon.svg",
+      },
+      {
+        name: "theme-color",
+        content: "#07090E",
       },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
+      },
+      {
+        rel: "icon",
+        type: "image/svg+xml",
+        href: "/kitonui-icon.svg",
+      },
+      {
+        rel: "apple-touch-icon",
+        href: "/kitonui-icon.svg",
+      },
+      {
+        rel: "manifest",
+        href: "/manifest.json",
       },
     ],
   }),

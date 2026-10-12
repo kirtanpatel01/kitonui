@@ -1,21 +1,40 @@
-# TanStack Start + shadcn/ui
+<p align="center">
+  <img src="./public/kitonui-icon.svg" width="72" height="72" alt="Kiton UI Logo" />
+</p>
 
-This is a template for a new TanStack Start project with React, TypeScript, and shadcn/ui.
+<h1 align="center">Kiton UI</h1>
 
-## Adding components
+<p align="center">
+  An open source shadcn component registry for React 19 and Tailwind CSS version 4.
+</p>
 
-To add components to your app, run the following command:
+---
+
+## Quick Install
+
+Install components directly from this GitHub registry using the shadcn CLI:
 
 ```bash
-npx shadcn@latest add button
+# Image generation canvas loader
+pnpm dlx shadcn add kirtanpatel01/kitonui/image-loader
+
+# Base UI button variant
+pnpm dlx shadcn add kirtanpatel01/kitonui/button
 ```
 
-This will place the ui components in the `components` directory.
+## Local Development
 
-## Using components
+```bash
+# Start Vite dev server
+pnpm dev
 
-To use the components in your app, import them as follows:
+# Build component registry payloads
+pnpm run registry:build
 
-```tsx
-import { Button } from "@/components/ui/button";
+# Validate registry schema
+pnpm run registry:validate
 ```
+
+## License
+
+Published under the [MIT License](LICENSE).

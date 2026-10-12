@@ -1,6 +1,18 @@
 {
   "version": 1,
   "skills": {
+    "landing-page-design": {
+      "source": "elayadesign/ai-design-skills",
+      "sourceType": "github",
+      "skillPath": "skills/landing-page-design/SKILL.md",
+      "computedHash": "45a4ccd7cd4a374d973207a8ae9afc26cbbfc699f59c93f6700f3b944d276bec"
+    },
+    "no-ai-slop": {
+      "source": "petergyang/no-ai-slop",
+      "sourceType": "github",
+      "skillPath": "skills/no-ai-slop/SKILL.md",
+      "computedHash": "109e265d222da64314b5f08634e4c4ab91051c81eff92d52beea8f3cd81ddb3d"
+    },
     "shadcn": {
       "source": "shadcn/ui",
       "sourceType": "github",
