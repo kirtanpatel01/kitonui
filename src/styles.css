@@ -3,13 +3,15 @@
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
 
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Instrument+Serif:ital@0;1&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import "@fontsource-variable/bricolage-grotesque";
+@import "@fontsource/instrument-serif";
+@import "@fontsource/lato";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
     --font-heading: var(--font-sans);
-    --font-logo: 'Bricolage Grotesque', sans-serif;
+    --font-logo: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', sans-serif;
     --font-serif: 'Instrument Serif', serif;
     --font-lato: 'Lato', sans-serif;
     --color-sidebar-ring: var(--sidebar-ring);
@@ -126,12 +128,9 @@
     @apply border-border outline-ring/50;
     }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-lato;
     }
   button:not(:disabled), [role="button"]:not(:disabled) {
     cursor: pointer;
-    }
-  html {
-    @apply font-lato;
     }
 }

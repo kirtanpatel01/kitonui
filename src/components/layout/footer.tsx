@@ -1,35 +1,39 @@
+import { motion } from "motion/react"
+
+const SHIMMER_DURATION = 4
+
 export function Footer() {
   return (
-    <footer className="relative bottom-0 w-full text-center overflow-hidden shadow-[iinset_0_24px_50px_-10px_var(--color-primary)] border-t border-primary/20 bg-chart-1/8 dark:bg-background pt-8 transition-all duration-300">
-        {/* <div className="pointer-events-none absolute -top-28 left-1/2 h-66 w-full -translate-x-1/2 rounded-full bg-chart-1/25 blur-3xl" /> */}
-        <div className="pointer-events-none absolute -bottom-28 left-1/2 h-66 w-full -translate-x-1/2 rounded-full bg-chart-1/15 blur-3xl" />
-        <img
-          src="/kitonui-icon.svg"
-          alt="Kiton UI logo"
-          className="mx-auto size-56"
-        />
+    <footer className="relative bottom-0 w-full text-center overflow-hidden bg-background pt-96">
+      <div className="pointer-events-none absolute -bottom-28 left-1/2 h-66 w-full -translate-x-1/2 rounded-full bg-chart-3/20 blur-3xl" />
+      {/* <AnimatedLogo /> */}
+      <div className="relative block select-none translate-y-[-0.55vw] -mb-[3.5vw]">
+        {/* Base Gradient Text */}
         <h2
-          style={{ textWrap: "balance" }}
-          className="font-logo relative text-3xl font-extrabold tracking-widest sm:text-[14rem] leading-39 bg-linear-to-b from-chart-5 dark:from-primary via-chart-2 dark:via-emerald-900 to-chart-1 dark:to-black/50 text-transparent bg-clip-text"
+          className="font-logo whitespace-nowrap text-[17vw] font-black tracking-widest leading-none bg-linear-to-b from-chart-5 dark:from-primary via-chart-2 dark:via-emerald-900 to-chart-1 dark:to-black/50 text-transparent bg-clip-text"
         >
-          KitonUI
+          KitonUi
         </h2>
 
-        {/* <Button
-          variant="outline"
-          size="sm"
-          className={"mt-2"}
-          render={
-            <a
-              href="https://github.com/kirtanpatel01/kitonui"
-              target="_blank"
-              rel="noreferrer"
-            />
-          }
+        {/* Shimmer Sheen Layer: Silver in light mode, Dark/Obsidian in dark mode */}
+        <motion.h2
+          key={SHIMMER_DURATION}
+          aria-hidden="true"
+          className="pointer-events-none font-logo absolute inset-0 whitespace-nowrap text-[17vw] font-black tracking-widest leading-none text-transparent bg-clip-text bg-no-repeat bg-[linear-gradient(110deg,transparent_20%,rgba(226,232,240,0.35)_45%,rgba(255,255,255,0.75)_50%,rgba(226,232,240,0.35)_55%,transparent_80%)] dark:bg-[linear-gradient(110deg,transparent_20%,rgba(0,0,0,0.3)_45%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.3)_55%,transparent_80%)] bg-[length:250%_100%]"
+          initial={{ backgroundPosition: "150% 0" }}
+          animate={{
+            backgroundPosition: ["150% 0", "-150% 0"],
+          }}
+          transition={{
+            duration: SHIMMER_DURATION,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatDelay: 0,
+          }}
         >
-          <GitHubIcon className="size-4" />
-          <span>View on GitHub</span>
-        </Button> */}
+          KitonUi
+        </motion.h2>
+      </div>
     </footer>
   )
 }
