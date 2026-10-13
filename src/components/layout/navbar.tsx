@@ -1,15 +1,9 @@
 import { useState, useEffect } from "react"
 import { GitHubIcon } from "@/components/icons"
 import { Within } from "@/components/ui/within"
-// import { Button } from "@/components/ui/button"
 import { useTheme } from "@/components/theme-provider"
 import { Link } from "@tanstack/react-router"
-
-// const NAV_LINKS = [
-//   { label: "Components", href: "#components" },
-//   { label: "How it works", href: "#how-it-works" },
-//   { label: "FAQ", href: "#faq" },
-// ]
+import Section from "./section"
 
 export function Navbar() {
   const { setTheme } = useTheme()
@@ -37,48 +31,40 @@ export function Navbar() {
   }
 
   return (
-    <header className="w-full pointer-events-none fixed inset-x-0 top-3 z-40 flex justify-center">
-      <nav
-        aria-label="Primary navigation"
-        className="pointer-events-auto flex w-full items-center justify-between gap-6 px-4"
-      >
-        <Link to="/" className="flex items-center">
-          <img
-            src="/kitonui-icon.svg"
-            alt="Kiton UI icon"
-            className="size-10 fill-foreground"
-          />
-          <span className="font-logo text-2xl font-semibold tracking-tighter text-foreground">
-            kitonui
-          </span>
-        </Link>
+    <header className="pointer-events-none sticky inset-x-0 top-0 z-40 flex w-full justify-center border-b border-chart-3/7 bg-primary/2 pb-1 backdrop-blur-md">
+      <Section>
+        <nav
+          aria-label="Primary navigation"
+          className="pointer-events-auto flex w-full items-center justify-between gap-6"
+        >
+          <Link to="/" className="flex items-center">
+            <img
+              src="/kitonui-icon.svg"
+              alt="Kiton UI icon"
+              className="size-10 fill-foreground"
+            />
+            <span className="font-logo text-2xl font-semibold tracking-tighter text-foreground">
+              kitonui
+            </span>
+          </Link>
 
-        <div className="flex items-center gap-2 sm:gap-4">
-          {/* {NAV_LINKS.map((link) => (
-            <Button
-              key={link.href}
-              variant="ghost"
-              size="sm"
-              render={<Link to={link.href} />}
+          <div className="mr-2 flex items-center gap-2 sm:gap-4">
+            <a
+              href={"https://github.com/kirtanpatel01/kitonui"}
+              target="_blank"
+              rel="noreferrer"
             >
-              {link.label}
-            </Button>
-          ))} */}
-          <a
-            href={"https://github.com/kirtanpatel01/kitonui"}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <GitHubIcon className="size-7" />
-          </a>
-          <Within
-            toggled={mounted ? isDark : undefined}
-            onClick={handleToggle}
-            size={24}
-            duration={700}
-          />
-        </div>
-      </nav>
+              <GitHubIcon className="size-7" />
+            </a>
+            <Within
+              toggled={mounted ? isDark : undefined}
+              onClick={handleToggle}
+              size={24}
+              duration={700}
+            />
+          </div>
+        </nav>
+      </Section>
     </header>
   )
 }

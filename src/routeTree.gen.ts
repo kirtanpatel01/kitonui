@@ -10,33 +10,43 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ComponentsComponentNameRouteImport } from './routes/components.$componentName'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ComponentsComponentNameRoute = ComponentsComponentNameRouteImport.update({
+  id: '/components/$componentName',
+  path: '/components/$componentName',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/components/$componentName': typeof ComponentsComponentNameRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/components/$componentName': typeof ComponentsComponentNameRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/components/$componentName': typeof ComponentsComponentNameRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/components/$componentName'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/components/$componentName'
+  id: '__root__' | '/' | '/components/$componentName'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ComponentsComponentNameRoute: typeof ComponentsComponentNameRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +58,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/components/$componentName': {
+      id: '/components/$componentName'
+      path: '/components/$componentName'
+      fullPath: '/components/$componentName'
+      preLoaderRoute: typeof ComponentsComponentNameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ComponentsComponentNameRoute: ComponentsComponentNameRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

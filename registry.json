@@ -13,7 +13,7 @@
       "registryDependencies": [],
       "files": [
         {
-          "path": "src/components/image-loader.tsx",
+          "path": "registry/image-loader.tsx",
           "type": "registry:ui"
         }
       ]

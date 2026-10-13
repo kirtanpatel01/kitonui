@@ -4,6 +4,8 @@ import { TanStackDevtools } from "@tanstack/react-devtools"
 import { ThemeProvider } from "@/components/theme-provider"
 
 import appCss from "../styles.css?url"
+import { Navbar } from "@/components/layout/navbar"
+import { Footer } from "@/components/layout/footer"
 
 export const Route = createRootRoute({
   head: () => ({
@@ -64,7 +66,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <ThemeProvider defaultTheme="system" storageKey="theme">
+          <Navbar />
           {children}
+          <Footer />
         </ThemeProvider>
         <TanStackDevtools
           config={{

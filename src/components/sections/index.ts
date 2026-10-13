@@ -1,7 +1,0 @@
-export { HeroSection } from "./hero-section"
-export { LoaderShowcaseSection, DEMO_IMAGES, type DemoImage } from "./loader-showcase-section"
-export { PhilosophySection, TAGLINE_WORDS } from "./philosophy-section"
-export { HowItWorksSection } from "./how-it-works-section"
-export { ButtonShowcaseSection } from "./button-showcase-section"
-export { FaqSection, FAQ_ITEMS, type FaqItem } from "./faq-section"
-export { CtaSection } from "./cta-section"
