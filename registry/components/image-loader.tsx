@@ -230,6 +230,7 @@ export function ImageGenerationLoader({
     colorProbe.remove();
 
     let imagePalette: [number, number, number][] | null = null;
+    let imagePaletteHighlights: [number, number, number][] | null = null;
     let imageBgLuminance = 255;
     const imgElement = parent.querySelector('img');
 
@@ -239,11 +240,11 @@ export function ImageGenerationLoader({
       
       try {
         const c = document.createElement("canvas");
-        c.width = imgElement.naturalWidth;
-        c.height = imgElement.naturalHeight;
+        c.width = 64;
+        c.height = 64;
         const ctx = c.getContext("2d", { willReadFrequently: true });
         if (!ctx) return;
-        ctx.drawImage(imgElement, 0, 0);
+        ctx.drawImage(imgElement, 0, 0, 64, 64);
         
         const samples: [number, number, number][] = [];
         
@@ -251,8 +252,8 @@ export function ImageGenerationLoader({
         const rows = 8;
         for (let r = 0; r < rows; r++) {
           for (let c = 0; c < cols; c++) {
-            const x = Math.floor((c + 0.5) * (imgElement.naturalWidth / cols));
-            const y = Math.floor((r + 0.5) * (imgElement.naturalHeight / rows));
+            const x = Math.floor((c + 0.5) * (64 / cols));
+            const y = Math.floor((r + 0.5) * (64 / rows));
             const pixel = ctx.getImageData(x, y, 1, 1).data;
             if (pixel[3] > 0) {
               samples.push([pixel[0], pixel[1], pixel[2]]);
@@ -278,6 +279,11 @@ export function ImageGenerationLoader({
           });
           const palette: [number, number, number][] = vibrantSamples.length >= 2 ? vibrantSamples : [[59, 130, 246]];
           imagePalette = palette;
+          imagePaletteHighlights = palette.map(color => [
+            Math.min(255, color[0] + 80),
+            Math.min(255, color[1] + 80),
+            Math.min(255, color[2] + 80)
+          ]);
           
           let maxVibrancy = -1;
           let vibrantColor = palette[0];
@@ -439,6 +445,7 @@ export function ImageGenerationLoader({
       const centerY = minY + progress * (maxY - minY);
       const bandTop = Math.round(centerY - bandHeight / 2);
       const bandCenter = bandTop + bandHeight / 2;
+
       if (!isReversing) {
         const revealEdge = Math.max(0, Math.min(height, bandTop));
         overlay.style.clipPath = `inset(0 0 ${height - revealEdge}px 0)`;
@@ -460,6 +467,7 @@ export function ImageGenerationLoader({
       const easedFade = fadeAmount * fadeAmount * (3 - 2 * fadeAmount);
       
       overlay.style.opacity = `${overlayOpacity * easedFade}`;
+
       const rowCount = Math.max(1, Math.floor((bandHeight + gap) / pitch));
       const gridHeight = rowCount * cellSize + (rowCount - 1) * gap;
       const gridTop = bandTop + Math.round((bandHeight - gridHeight) / 2);
@@ -519,6 +527,10 @@ export function ImageGenerationLoader({
         context.fillRect(0, bandTop, width, bandHeight);
       }
 
+      const shadowColor = imageBgLuminance > 128 ? "rgb(0, 0, 0)" : "rgb(255, 255, 255)";
+      const fromRgbStr = `rgb(${fromRgb[0]}, ${fromRgb[1]}, ${fromRgb[2]})`;
+      const toRgbStr = `rgb(${toRgb[0]}, ${toRgb[1]}, ${toRgb[2]})`;
+
       for (const cell of cells) {
         const x = cell.column * pitch;
         const baseY = gridTop + cell.row * pitch;
@@ -527,7 +539,7 @@ export function ImageGenerationLoader({
         const y = bandCenter + distanceFromCenter * stretch - cellSize / 2;
         if (y + cellSize < 0 || y > height) continue;
 
-        const animatedColorMix = (Math.sin(now * 0.0022 + cell.phase) + 1) / 2;
+        const animatedColorMix = (Math.sin(now * 0.0022 + cell.phase) + 1) * 0.5;
         const colorMix = text
           ? cell.isText
             ? 0.82 + animatedColorMix * 0.18
@@ -538,20 +550,16 @@ export function ImageGenerationLoader({
         let cellHighlight = toRgb;
         
         if (imagePalette && imagePalette.length > 0) {
-          const color = imagePalette[cell.colorIndex % imagePalette.length];
-          cellBase = color;
-          cellHighlight = [
-            Math.min(255, color[0] + 80),
-            Math.min(255, color[1] + 80),
-            Math.min(255, color[2] + 80)
-          ];
+          const idx = cell.colorIndex % imagePalette.length;
+          cellBase = imagePalette[idx];
+          cellHighlight = imagePaletteHighlights ? imagePaletteHighlights[idx] : toRgb;
         }
 
         const red = Math.round(cellBase[0] + (cellHighlight[0] - cellBase[0]) * colorMix);
         const green = Math.round(cellBase[1] + (cellHighlight[1] - cellBase[1]) * colorMix);
         const blue = Math.round(cellBase[2] + (cellHighlight[2] - cellBase[2]) * colorMix);
         const pulse =
-          0.16 + ((Math.sin(now * 0.0045 + cell.phase) + 1) / 2) * 0.84;
+          0.16 + ((Math.sin(now * 0.0045 + cell.phase) + 1) * 0.5) * 0.84;
         const cellCenterX = x + cellSize / 2;
         let renderedSize = cellSize;
 
@@ -562,25 +570,25 @@ export function ImageGenerationLoader({
         ) {
           const rowStagger = cell.row * 9;
           const distanceFromScaleWave = cellCenterX - (waveX - rowStagger);
-          const scaleWaveInfluence = Math.exp(
-            -(distanceFromScaleWave * distanceFromScaleWave) / (2 * 52 * 52),
-          );
-          const randomStrength = (cell.scaleSeed - 0.42) / 0.58;
-          renderedSize =
-            cellSize *
-            (1 +
-              scaleAmplitude *
-                scaleWaveInfluence *
-                (0.35 + randomStrength * 0.65));
+          if (Math.abs(distanceFromScaleWave) < 140) {
+            const scaleWaveInfluence = Math.exp(
+              -(distanceFromScaleWave * distanceFromScaleWave) / (2 * 52 * 52),
+            );
+            const randomStrength = (cell.scaleSeed - 0.42) / 0.58;
+            renderedSize =
+              cellSize *
+              (1 +
+                scaleAmplitude *
+                  scaleWaveInfluence *
+                  (0.35 + randomStrength * 0.65));
+          }
         }
 
         const cellCenterY = y + cellSize / 2;
-
-        const shadowColor = imageBgLuminance > 128 ? '0, 0, 0' : '255, 255, 255';
         
         if (text && cell.isText) {
           context.globalAlpha = 0.4 * pulse;
-          context.fillStyle = `rgb(${shadowColor})`;
+          context.fillStyle = shadowColor;
           context.fillRect(
             cellCenterX - renderedSize / 2,
             cellCenterY - renderedSize / 2 + 2,
@@ -589,7 +597,7 @@ export function ImageGenerationLoader({
           );
 
           context.globalAlpha = 0.76 + pulse * 0.24;
-          context.fillStyle = `rgb(${fromRgb[0]}, ${fromRgb[1]}, ${fromRgb[2]})`;
+          context.fillStyle = fromRgbStr;
           context.fillRect(
             cellCenterX - renderedSize / 2,
             cellCenterY - renderedSize / 2,
@@ -599,7 +607,7 @@ export function ImageGenerationLoader({
 
           const innerSize = Math.max(1, renderedSize * 0.55);
           context.globalAlpha = 0.84 + pulse * 0.16;
-          context.fillStyle = `rgb(${toRgb[0]}, ${toRgb[1]}, ${toRgb[2]})`;
+          context.fillStyle = toRgbStr;
           context.fillRect(
             cellCenterX - innerSize / 2,
             cellCenterY - innerSize / 2,
@@ -608,7 +616,7 @@ export function ImageGenerationLoader({
           );
         } else {
           context.globalAlpha = pulse * 0.15 * cell.opacity;
-          context.fillStyle = `rgb(${shadowColor})`;
+          context.fillStyle = shadowColor;
           context.fillRect(
             cellCenterX - renderedSize / 2,
             cellCenterY - renderedSize / 2 + 1,

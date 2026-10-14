@@ -185,7 +185,7 @@ export function CodeBlockCommand({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-xl border-none shadow-none transition-colors duration-",
+        "relative overflow-hidden rounded-xl border-none shadow-none transition-colors duration-200",
         // Self-contained package manager variables: darker & high contrast in light mode, original vibrant tones in dark mode
         "[--pnpm-color:#a65f00] dark:[--pnpm-color:#fef08a] dark:[--pnpm-bg:rgba(248,171,0,0.12)] dark:[--pnpm-header-bg:rgba(248,171,0,0.08)] dark:[--pnpm-content-bg:rgba(248,171,0,0.16)]",
         "[--npm-color:#991b1b] dark:[--npm-color:#ff9999] dark:[--npm-bg:rgba(203,56,55,0.12)] dark:[--npm-header-bg:rgba(203,56,55,0.08)] dark:[--npm-content-bg:rgba(203,56,55,0.16)]",
@@ -204,7 +204,7 @@ export function CodeBlockCommand({
         }}
       >
         <ScrollArea.Root
-          className="w-full border-none pr-10 shadow-none transition-colors duration-"
+          className="w-full border-none pr-10 shadow-none transition-colors duration-200"
           style={{
             backgroundColor: currentTheme.headerBg,
           }}
@@ -217,11 +217,13 @@ export function CodeBlockCommand({
             )}
             render={<ScrollArea.Viewport />}
           >
-            <IconSwap>
-              <IconSwapItem className="mr-2" key={packageManager}>
-                {getIconForPackageManager(packageManager)}
-              </IconSwapItem>
-            </IconSwap>
+            <div className="mr-2 flex size-4 shrink-0 items-center justify-center">
+              <IconSwap>
+                <IconSwapItem key={packageManager}>
+                  {getIconForPackageManager(packageManager)}
+                </IconSwapItem>
+              </IconSwap>
+            </div>
 
             {tabsFiltered.map(([key]) => {
               const isSelected = key === packageManager
@@ -229,7 +231,7 @@ export function CodeBlockCommand({
                 <TabsTrigger
                   key={key}
                   className={cn(
-                    "relative flex h-10 items-center rounded-none p-0 px-2 font-mono transition-colors duration-",
+                    "relative flex h-10 items-center rounded-none p-0 px-2 font-mono transition-colors duration-200",
                     isSelected
                       ? "font-semibold"
                       : "opacity-40 hover:opacity-80"
@@ -243,7 +245,7 @@ export function CodeBlockCommand({
                   {isSelected && (
                     <motion.div
                       layoutId="active-tab-indicator-line"
-                      className="absolute inset-x-0 bottom-0 h-0.5 transition-colors duration-"
+                      className="absolute inset-x-0 bottom-0 h-0.5 transition-colors duration-200"
                       style={{
                         backgroundColor: currentTheme.indicator,
                       }}
@@ -265,7 +267,7 @@ export function CodeBlockCommand({
             <TabsContent key={key} value={key} className="border-none">
               <pre
                 data-pm={key}
-                className="group/tabs-content-pre overscroll-x-contain p-4 leading-6 border-none transition-colors duration- not-data-[pm=prompt]:overflow-x-auto"
+                className="group/tabs-content-pre overscroll-x-contain p-4 leading-6 border-none transition-colors duration-200 not-data-[pm=prompt]:overflow-x-auto"
                 style={{
                   backgroundColor: currentTheme.contentBg,
                 }}
@@ -273,7 +275,7 @@ export function CodeBlockCommand({
                 <code
                   data-slot="code-block"
                   data-language="bash"
-                  className="font-mono text-sm/none transition-colors duration- group-data-[pm=prompt]/tabs-content-pre:whitespace-normal"
+                  className="font-mono text-sm/none transition-colors duration-200 group-data-[pm=prompt]/tabs-content-pre:whitespace-normal"
                   style={{
                     color: currentTheme.primary,
                   }}
@@ -290,7 +292,7 @@ export function CodeBlockCommand({
       </Tabs>
 
       <CopyButton
-        className="absolute top-2 right-2 z-10 size-6 rounded-md border-none opacity-70 hover:opacity-100 transition-[color,opacity] duration- [&_svg:not([class*='size-'])]:size-3.5"
+        className="absolute top-2 right-2 z-10 size-6 rounded-md border-none opacity-70 hover:opacity-100 transition-[color,opacity] duration-200 [&_svg:not([class*='size-'])]:size-3.5"
         style={{
           color: currentTheme.primary,
         }}

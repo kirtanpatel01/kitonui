@@ -14,38 +14,47 @@ import {
 const PRESETS = [
   {
     src: "https://assets.aceternity.com/components/vertical-sliding-loader-demo.webp",
+    thumb: "https://assets.aceternity.com/components/vertical-sliding-loader-demo.webp",
     text: "UI DESIGN",
   },
   {
     src: "https://assets.aceternity.com/components/vertical-sliding-loader-demo-dark.webp",
+    thumb: "https://assets.aceternity.com/components/vertical-sliding-loader-demo-dark.webp",
     text: "DARK MODE",
   },
   {
     src: "https://images.unsplash.com/photo-1620694563886-c3a80ec55f41",
+    thumb: "https://images.unsplash.com/photo-1620694563886-c3a80ec55f41",
     text: "YELLOW BIRD",
   },
   {
     src: "https://images.unsplash.com/photo-1526344966-89049886b28d",
+    thumb: "https://images.unsplash.com/photo-1526344966-89049886b28d",
     text: "BLOSSOMS",
   },
   {
     src: "https://images.unsplash.com/photo-1762564046286-733d88d62800",
+    thumb: "https://images.unsplash.com/photo-1762564046286-733d88d62800",
     text: "MOUNTAINS",
   },
   {
     src: "https://images.unsplash.com/photo-1523712999610-f77fbcfc3843",
+    thumb: "https://images.unsplash.com/photo-1523712999610-f77fbcfc3843",
     text: "FOREST",
   },
   {
     src: "https://images.unsplash.com/photo-1470770841072-f978cf4d019e",
+    thumb: "https://images.unsplash.com/photo-1470770841072-f978cf4d019e",
     text: "LAKE CABIN",
   },
   {
     src: "https://images.unsplash.com/photo-1451187580459-43490279c0fa",
+    thumb: "https://images.unsplash.com/photo-1451187580459-43490279c0fa",
     text: "EARTH",
   },
   {
     src: "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
+    thumb: "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
     text: "WORKSPACE",
   },
 ]
@@ -153,7 +162,7 @@ function ImageLoaderExample() {
                     title={`Load example ${i + 1}: ${preset.text}`}
                   >
                     <img
-                      src={preset.src}
+                      src={preset.thumb}
                       alt={`Preset ${i + 1}`}
                       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                       crossOrigin="anonymous"
