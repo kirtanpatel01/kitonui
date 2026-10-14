@@ -13,24 +13,6 @@ const REGISTRY_ITEMS = [
     tag: "Canvas • Animation",
     command: "pnpm dlx shadcn add kirtanpatel01/kitonui/image-loader",
   },
-  {
-    name: "image-loader",
-    title: "Image Loader",
-    badge: "registry:ui",
-    description:
-      "An interactive canvas-based pixel grid image generation loader effect.",
-    tag: "Canvas • Animation",
-    command: "pnpm dlx shadcn add kirtanpatel01/kitonui/image-loader",
-  },
-  {
-    name: "image-loader",
-    title: "Image Loader",
-    badge: "registry:ui",
-    description:
-      "An interactive canvas-based pixel grid image generation loader effect.",
-    tag: "Canvas • Animation",
-    command: "pnpm dlx shadcn add kirtanpatel01/kitonui/image-loader",
-  },
 ]
 
 function HomePage() {

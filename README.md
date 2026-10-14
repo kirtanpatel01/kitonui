@@ -38,3 +38,6 @@ pnpm run registry:validate
 ## License
 
 Published under the [MIT License](LICENSE).
+
+adromeeds
+github-dark-default

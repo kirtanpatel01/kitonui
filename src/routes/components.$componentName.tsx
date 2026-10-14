@@ -54,7 +54,7 @@ function ComponentDetailPage() {
 
   return (
     <main className="min-h-screen">
-      <Section>
+      <Section className="py-2">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
