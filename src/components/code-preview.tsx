@@ -1,7 +1,6 @@
 import * as React from "react"
 import { useState, useEffect } from "react"
 import { codeToHtml } from "shiki"
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { cn } from "cn"
 
@@ -52,7 +51,8 @@ export function CodePreview({
   ...props
 }: CodePreviewProps) {
   const content = preview ?? children
-  const rawCode = manualCode ?? (componentName ? getRegistryComponentCode(componentName) : "")
+  const rawCode =
+    manualCode ?? (componentName ? getRegistryComponentCode(componentName) : "")
 
   const { theme } = useTheme()
   const [highlightedCode, setHighlightedCode] = useState("")
@@ -90,54 +90,77 @@ export function CodePreview({
     }
   }, [rawCode, theme])
 
+  const [activeTab, setActiveTab] = useState<"preview" | "code">(defaultTab)
+
   return (
     <div
       className={cn(
-        "flex min-w-0 flex-1 flex-col gap-0 overflow-hidden rounded-2xl border",
+        "flex min-w-0 flex-1 flex-col gap-2 overflow-hidden rounded-xl border border-primary/30 bg-primary/20 p-2 shadow-[inset_0_0_8px_oklch(from_var(--primary)_l_c_h/0.6)]",
         className
       )}
       {...props}
     >
-      <Tabs defaultValue={defaultTab} className="gap-0">
-        <div className="flex items-center justify-between border-b bg-muted/20 p-2">
-          <TabsList>
-            <TabsTrigger value="preview">Preview</TabsTrigger>
-            {rawCode && <TabsTrigger value="code">Code</TabsTrigger>}
-          </TabsList>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center font-logo">
+          <button
+            type="button"
+            onClick={() => setActiveTab("preview")}
+            className={cn(
+              "rounded-lg px-3 py-1.5 text-sm font-medium transition-colors outline-none",
+              activeTab === "preview"
+                ? "bg-background font-semibold text-primary shadow-sm shadow-primary/30 dark:shadow-black dark:shadow-[inset_0_0_4px_2px]!"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            Preview
+          </button>
 
-          {action && <div>{action}</div>}
+          {rawCode && (
+            <button
+              type="button"
+              onClick={() => setActiveTab("code")}
+              className={cn(
+                "rounded-lg px-3 py-1.5 text-sm font-medium transition-colors outline-none",
+                activeTab === "code"
+                  ? "bg-background font-semibold text-primary shadow-sm shadow-primary/30 dark:shadow-black dark:shadow-[inset_0_0_4px_2px]!"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              Code
+            </button>
+          )}
         </div>
 
-        <TabsContent
-          value="preview"
-          className="relative m-0 flex min-h-[360px] flex-1 items-center justify-center p-4 outline-none sm:min-h-[460px] lg:min-h-[550px]"
-        >
-          {content}
-        </TabsContent>
+        {action && <div>{action}</div>}
+      </div>
 
-        {rawCode && (
-          <TabsContent
-            value="code"
-            className="relative m-0 h-[420px] flex-1 overflow-hidden outline-none sm:h-[500px] lg:h-full lg:max-h-192"
-          >
-            <div className="h-full w-full bg-muted/5 p-3 sm:p-4">
-              <ScrollArea className="h-full w-full rounded-xl text-left [&_pre]:!m-0 [&_pre]:!bg-transparent [&_pre]:!p-4 sm:[&_pre]:!p-6">
-                {highlightedCode ? (
-                  <div
-                    className="w-fit min-w-full font-mono text-xs leading-relaxed sm:text-[13px]"
-                    dangerouslySetInnerHTML={{ __html: highlightedCode }}
-                  />
-                ) : (
-                  <pre className="font-mono text-xs leading-relaxed whitespace-pre text-muted-foreground sm:text-[13px]">
-                    <code>{rawCode}</code>
-                  </pre>
-                )}
-                <ScrollBar orientation="horizontal" />
-              </ScrollArea>
+      <div className="relative m-0 flex min-h-[360px] flex-1 flex-col overflow-hidden rounded-xl bg-background shadow-sm shadow-primary/30 sm:min-h-[460px] lg:min-h-[550px]">
+        {activeTab === "preview" ? (
+          <div className="flex h-full w-full flex-1 items-center justify-center p-4">
+            {content}
+          </div>
+        ) : (
+          rawCode && (
+            <div className="h-[420px] w-full flex-1 overflow-hidden sm:h-[500px] lg:h-full lg:max-h-192">
+              <div className="h-full w-full bg-muted/5">
+                <ScrollArea className="h-full w-full rounded-xl text-left [&_pre]:!m-0 [&_pre]:!bg-transparent [&_pre]:!p-4 sm:[&_pre]:!p-6">
+                  {highlightedCode ? (
+                    <div
+                      className="w-fit min-w-full font-mono text-xs leading-relaxed sm:text-[13px]"
+                      dangerouslySetInnerHTML={{ __html: highlightedCode }}
+                    />
+                  ) : (
+                    <pre className="font-mono text-xs leading-relaxed whitespace-pre text-muted-foreground sm:text-[13px]">
+                      <code>{rawCode}</code>
+                    </pre>
+                  )}
+                  <ScrollBar orientation="horizontal" />
+                </ScrollArea>
+              </div>
             </div>
-          </TabsContent>
+          )
         )}
-      </Tabs>
+      </div>
     </div>
   )
 }
