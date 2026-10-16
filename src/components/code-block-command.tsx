@@ -39,6 +39,10 @@ export function usePackageManager() {
  */
 export type CodeBlockCommandProps = {
   /**
+   * Shorthand command (e.g. "npx shadcn add ...") automatically converted for npm, pnpm, yarn, and bun.
+   */
+  command?: string
+  /**
    * Natural language instruction for AI agents to install a package or component.
    */
   prompt?: string
@@ -155,6 +159,7 @@ const PM_THEMES: Record<
 }
 
 export function CodeBlockCommand({
+  command,
   prompt,
   pnpm,
   yarn,
@@ -165,15 +170,19 @@ export function CodeBlockCommand({
 }: CodeBlockCommandProps) {
   const [packageManager, setPackageManager] = usePackageManager()
 
+  const converted = useMemo(() => {
+    return command ? convertNpmCommand(command) : null
+  }, [command])
+
   const tabs = useMemo(() => {
     return {
       prompt,
-      pnpm,
-      yarn,
-      npm,
-      bun,
+      pnpm: pnpm ?? converted?.pnpm,
+      yarn: yarn ?? converted?.yarn,
+      npm: npm ?? converted?.npm,
+      bun: bun ?? converted?.bun,
     }
-  }, [prompt, pnpm, yarn, npm, bun])
+  }, [prompt, pnpm, yarn, npm, bun, converted])
 
   const tabsFiltered = useMemo(
     () => Object.entries(tabs).filter(([, value]) => !!value),

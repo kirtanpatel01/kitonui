@@ -4,12 +4,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { ImageGenerationLoader } from "../components/image-loader"
-import Section from "@/components/layout/section"
 import { CodePreview } from "@/components/code-preview"
-import {
-  CodeBlockCommand,
-  convertNpmCommand,
-} from "@/components/code-block-command"
 
 const PRESETS = [
   {
@@ -72,42 +67,31 @@ function ImageLoaderExample() {
   }
 
   return (
-    <div className="flex w-full flex-col gap-6">
-      <Section className="w-full">
-        <div className="w-fit">
-          <CodeBlockCommand
-            {...convertNpmCommand(
-              "npx shadcn add kirtanpatel01/kitonui/image-loader"
-            )}
-          />
-        </div>
-      </Section>
-
-      <Section className="my-0 flex w-full max-w-7xl flex-col gap-6 lg:flex-row">
-        {/* Preview & Code Panel */}
-        <CodePreview
-          componentName="image-loader"
-          preview={
-            <ScrollArea className="h-full w-full bg-muted/5">
-              <div className="flex min-h-full items-center justify-center p-3 sm:p-4">
-                <div className="relative w-fit max-w-full overflow-hidden rounded-lg border bg-background shadow-xl">
-                  <img
-                    src={imageUrl}
-                    alt="Preview"
-                    className="block max-h-[400px] w-full max-w-2xl object-cover sm:max-h-[500px] lg:max-h-[600px]"
-                    crossOrigin="anonymous"
-                  />
-                  {/* The key forces React to unmount the old loader and mount a new one, resetting both colors and text immediately! */}
-                  <ImageGenerationLoader
-                    key={`${imageUrl}-${loaderText}`}
-                    text={loaderText}
-                    effect="scale-wave"
-                  />
-                </div>
+    <div className="flex w-full flex-col gap-6 lg:flex-row">
+      {/* Preview & Code Panel */}
+      <CodePreview
+        componentName="image-loader"
+        preview={
+          <ScrollArea className="h-full w-full bg-muted/5">
+            <div className="flex min-h-full items-center justify-center p-3 sm:p-4">
+              <div className="relative w-fit max-w-full overflow-hidden rounded-lg border bg-background shadow-xl">
+                <img
+                  src={imageUrl}
+                  alt="Preview"
+                  className="block max-h-[400px] w-full max-w-2xl object-cover sm:max-h-[500px] lg:max-h-[600px]"
+                  crossOrigin="anonymous"
+                />
+                {/* The key forces React to unmount the old loader and mount a new one, resetting both colors and text immediately! */}
+                <ImageGenerationLoader
+                  key={`${imageUrl}-${loaderText}`}
+                  text={loaderText}
+                  effect="scale-wave"
+                />
               </div>
-            </ScrollArea>
-          }
-        />
+            </div>
+          </ScrollArea>
+        }
+      />
 
       {/* Settings Panel */}
       <div className="flex w-full flex-col overflow-hidden rounded-2xl border lg:w-96 lg:shrink-0">
@@ -174,7 +158,6 @@ function ImageLoaderExample() {
           </div>
         </ScrollArea>
       </div>
-    </Section>
     </div>
   )
 }

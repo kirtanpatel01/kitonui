@@ -7,26 +7,7 @@ import { cn } from "cn"
 
 import { useTheme } from "@/components/theme-provider"
 
-// Automatically import all raw TSX code from registry/components
-const REGISTRY_COMPONENTS = import.meta.glob<string>(
-  "../../registry/components/*.tsx",
-  {
-    query: "?raw",
-    import: "default",
-    eager: true,
-  }
-)
-
-function getRegistryComponentCode(name: string): string {
-  // Try exact file name or with .tsx extension
-  const cleanName = name.replace(/\.tsx$/, "")
-  for (const [path, code] of Object.entries(REGISTRY_COMPONENTS)) {
-    if (path.endsWith(`/${cleanName}.tsx`)) {
-      return code
-    }
-  }
-  return ""
-}
+import { getRegistryComponentCode } from "@/lib/registry"
 
 export interface CodePreviewProps extends React.HTMLAttributes<HTMLDivElement> {
   /** The rendered component to preview */

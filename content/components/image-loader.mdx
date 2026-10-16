@@ -10,3 +10,39 @@ import ImageLoaderExample from "@/registry/examples/image-loader-example"
 An interactive canvas-based pixel grid image generation loader effect with custom colors, easing, and typography.
 
 <ImageLoaderExample />
+
+## Installation
+
+<Tabs defaultValue="cli" className="w-full">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli" className="mt-4">
+    <CodeBlockCommand command="npx shadcn add kirtanpatel01/kitonui/image-loader" />
+  </TabsContent>
+  <TabsContent value="manual" className="mt-4 space-y-4">
+    <p>1. Copy and paste the following component code into your project:</p>
+    <CodeBlock componentName="image-loader" path="components/ui/image-loader.tsx" />
+    <p>2. Ensure you have the <code>cn</code> helper configured in <code>@/lib/utils</code>.</p>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import { ImageGenerationLoader } from "@/components/ui/image-loader"
+
+export default function Demo() {
+  return (
+    <div className="relative overflow-hidden rounded-lg">
+      <img
+        src="https://images.unsplash.com/photo-1620694563886-c3a80ec55f41"
+        alt="Demo"
+        className="w-full object-cover"
+      />
+      <ImageGenerationLoader text="GENERATING" effect="scale-wave" />
+    </div>
+  )
+}
+```

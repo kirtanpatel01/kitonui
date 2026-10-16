@@ -9,9 +9,13 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { CopyButton } from "@/components/copy-button"
 import { useTheme } from "@/components/theme-provider"
 
+import { getRegistryComponentCode } from "@/lib/registry"
+
 export interface CodeBlockProps extends React.HTMLAttributes<HTMLDivElement> {
   /** The code string to render */
-  code: string
+  code?: string
+  /** Name of the component in registry/components (e.g. "image-loader") */
+  componentName?: string
   /** File path displayed on the left side of the header */
   path?: string
   /** Programming language for syntax highlighting (e.g. "tsx", "ts", "json", "bash") */
@@ -53,7 +57,8 @@ function detectLanguage(filePath?: string, explicitLang?: string): string {
 }
 
 export function CodeBlock({
-  code,
+  code: manualCode,
+  componentName,
   path,
   lang,
   onCopySuccess,
@@ -64,7 +69,11 @@ export function CodeBlock({
   const { theme } = useTheme()
   const [highlightedCode, setHighlightedCode] = useState("")
 
-  const resolvedLang = detectLanguage(path, lang)
+  const code =
+    manualCode ?? (componentName ? getRegistryComponentCode(componentName) : "")
+  const displayPath =
+    path ?? (componentName ? `components/ui/${componentName}.tsx` : "code")
+  const resolvedLang = detectLanguage(displayPath, lang)
 
   useEffect(() => {
     if (!code) {
@@ -115,7 +124,7 @@ export function CodeBlock({
       {/* Top Header */}
       <div className="flex items-center justify-between pl-2">
         <span className="font-mono text-xs font-semibold text-primary select-none">
-          {path || "code"}
+          {displayPath}
         </span>
 
         <CopyButton
@@ -128,20 +137,21 @@ export function CodeBlock({
       </div>
 
       {/* Code Content */}
-      <div className="relative m-0 flex flex-1 flex-col overflow-hidden rounded-[12px] bg-background shadow-sm shadow-primary/30">
+      <div className="relative m-0 flex max-h-[460px] flex-1 flex-col overflow-hidden rounded-[12px] bg-background shadow-sm shadow-primary/30">
         <div className="h-full w-full bg-muted/5">
-          <ScrollArea className="h-full w-full rounded-[12px] text-left [&_pre]:!m-0 [&_pre]:!bg-transparent [&_pre]:!px-3 [&_pre]:!py-2">
+          <ScrollArea className="h-full w-full rounded-[12px] text-left [&_pre]:!m-0 [&_pre]:!bg-transparent [&_pre]:!p-4">
             {highlightedCode ? (
               <div
-                className="w-fit min-w-full font-mono text-xs leading-relaxed sm:text-sm"
+                className="w-fit min-w-full font-mono text-xs leading-relaxed sm:text-[13px]"
                 dangerouslySetInnerHTML={{ __html: highlightedCode }}
               />
             ) : (
-              <pre className="font-mono text-xs leading-relaxed whitespace-pre text-muted-foreground sm:text-sm">
+              <pre className="font-mono text-xs leading-relaxed whitespace-pre text-muted-foreground sm:text-[13px]">
                 <code>{code}</code>
               </pre>
             )}
             <ScrollBar orientation="horizontal" />
+            <ScrollBar orientation="vertical" />
           </ScrollArea>
         </div>
       </div>
