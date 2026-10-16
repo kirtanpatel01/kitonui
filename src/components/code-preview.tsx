@@ -2,6 +2,7 @@ import * as React from "react"
 import { useState, useEffect } from "react"
 import { codeToHtml } from "shiki"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { CopyButton } from "@/components/copy-button"
 import { cn } from "cn"
 
 import { useTheme } from "@/components/theme-provider"
@@ -38,6 +39,10 @@ export interface CodePreviewProps extends React.HTMLAttributes<HTMLDivElement> {
   code?: string
   defaultTab?: "preview" | "code"
   action?: React.ReactNode
+  /** Callback invoked on successful copy in code panel */
+  onCopySuccess?: (copiedText: string) => void
+  /** Callback invoked when copy fails in code panel */
+  onCopyError?: (error: Error) => void
 }
 
 export function CodePreview({
@@ -47,6 +52,8 @@ export function CodePreview({
   code: manualCode,
   defaultTab = "preview",
   action,
+  onCopySuccess,
+  onCopyError,
   className,
   ...props
 }: CodePreviewProps) {
@@ -95,7 +102,7 @@ export function CodePreview({
   return (
     <div
       className={cn(
-        "flex min-w-0 flex-1 flex-col gap-2 overflow-hidden rounded-xl border border-primary/30 bg-primary/20 p-2 shadow-[inset_0_0_8px_oklch(from_var(--primary)_l_c_h/0.6)]",
+        "flex min-w-0 flex-1 flex-col gap-2 overflow-hidden rounded-[20px] border border-primary/30 bg-primary/20 p-2 shadow-[inset_0_0_8px_oklch(from_var(--primary)_l_c_h/0.6)]",
         className
       )}
       {...props}
@@ -131,10 +138,21 @@ export function CodePreview({
           )}
         </div>
 
-        {action && <div>{action}</div>}
+        <div className="flex items-center gap-2">
+          {action && <div>{action}</div>}
+          {activeTab === "code" && rawCode && (
+            <CopyButton
+              className="text-primary/80"
+              variant="link"
+              text={rawCode}
+              onCopySuccess={onCopySuccess}
+              onCopyError={onCopyError}
+            />
+          )}
+        </div>
       </div>
 
-      <div className="relative m-0 flex min-h-[360px] flex-1 flex-col overflow-hidden rounded-xl bg-background shadow-sm shadow-primary/30 sm:min-h-[460px] lg:min-h-[550px]">
+      <div className="relative m-0 flex min-h-[360px] flex-1 flex-col overflow-hidden rounded-[12px] bg-background shadow-sm shadow-primary/30 sm:min-h-[460px] lg:min-h-[550px]">
         {activeTab === "preview" ? (
           <div className="flex h-full w-full flex-1 items-center justify-center p-4">
             {content}
@@ -143,7 +161,7 @@ export function CodePreview({
           rawCode && (
             <div className="h-[420px] w-full flex-1 overflow-hidden sm:h-[500px] lg:h-full lg:max-h-192">
               <div className="h-full w-full bg-muted/5">
-                <ScrollArea className="h-full w-full rounded-xl text-left [&_pre]:!m-0 [&_pre]:!bg-transparent [&_pre]:!p-4 sm:[&_pre]:!p-6">
+                <ScrollArea className="h-full w-full rounded-[12px] text-left [&_pre]:!m-0 [&_pre]:!bg-transparent [&_pre]:!p-4 sm:[&_pre]:!p-6">
                   {highlightedCode ? (
                     <div
                       className="w-fit min-w-full font-mono text-xs leading-relaxed sm:text-[13px]"
