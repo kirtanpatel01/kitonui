@@ -1,5 +1,5 @@
-import React from "react"
-import { createFileRoute, notFound } from "@tanstack/react-router"
+import { Suspense } from "react"
+import { createFileRoute, notFound, Link } from "@tanstack/react-router"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,146 +9,175 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import Section from "@/components/layout/section"
-import { CodeBlock } from "@/components/code-block"
-import { CodeBlockCommand } from "@/components/code-block-command"
+import { mdxComponents } from "@/components/mdx-components"
+import { TableOfContents } from "@/components/toc"
 import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-} from "@/components/ui/tabs"
-
-import ImageLoaderDoc from "@/content/components/image-loader.mdx"
-
-const DOCS_MAP: Record<string, React.ComponentType<any>> = {
-  "image-loader": ImageLoaderDoc,
-}
-
-const mdxComponents = {
-  h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <h1
-      className="font-logo text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl"
-      {...props}
-    />
-  ),
-  h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <h2
-      className="font-logo text-2xl font-bold tracking-tight text-foreground pt-8 pb-2 border-b border-border/40 scroll-m-20 first:pt-0"
-      {...props}
-    />
-  ),
-  h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <h3
-      className="font-logo text-lg font-semibold tracking-tight text-foreground pt-4 pb-1 scroll-m-20 sm:text-xl"
-      {...props}
-    />
-  ),
-  p: (props: React.HTMLAttributes<HTMLParagraphElement>) => (
-    <p
-      className="text-base leading-relaxed text-muted-foreground"
-      {...props}
-    />
-  ),
-  ul: (props: React.HTMLAttributes<HTMLUListElement>) => (
-    <ul
-      className="my-3 ml-6 list-disc space-y-1.5 text-muted-foreground [&>li]:leading-relaxed"
-      {...props}
-    />
-  ),
-  ol: (props: React.OlHTMLAttributes<HTMLOListElement>) => (
-    <ol
-      className="my-3 ml-6 list-decimal space-y-1.5 text-muted-foreground [&>li]:leading-relaxed"
-      {...props}
-    />
-  ),
-  li: (props: React.LiHTMLAttributes<HTMLLIElement>) => (
-    <li className="leading-relaxed" {...props} />
-  ),
-  code: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => {
-    const isBlock = className?.includes("language-")
-    if (isBlock) {
-      return <code className={className} {...props} />
-    }
-    return (
-      <code
-        className="relative rounded-md border border-border/60 bg-muted/60 px-1.5 py-0.5 font-mono text-xs font-medium text-foreground"
-        {...props}
-      />
-    )
-  },
-  pre: (props: React.HTMLAttributes<HTMLPreElement>) => {
-    const children = props.children as any
-    if (
-      React.isValidElement(children) &&
-      typeof (children.props as any)?.children === "string"
-    ) {
-      const codeText = (children.props as any).children.trim()
-      const className = (children.props as any).className || ""
-      const langMatch = className.match(/language-(\w+)/)
-      const lang = langMatch ? langMatch[1] : undefined
-      return <CodeBlock code={codeText} lang={lang} className="my-4" />
-    }
-    return <pre {...props} />
-  },
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-  CodeBlockCommand,
-  CodeBlock,
-}
+  getComponentDoc,
+  getLazyComponentDoc,
+  hasComponentDoc,
+  getComponentSlugs,
+} from "@/lib/docs"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 
 export const Route = createFileRoute("/components/$componentName")({
-  loader: ({ params }) => {
-    const valid = ["image-loader", "button"]
-    if (!valid.includes(params.componentName)) {
+  loader: async ({ params }) => {
+    if (!hasComponentDoc(params.componentName)) {
       throw notFound()
     }
-    return { componentName: params.componentName }
+
+    const doc = await getComponentDoc(params.componentName)
+    if (!doc) {
+      throw notFound()
+    }
+
+    return {
+      slug: params.componentName,
+      frontmatter: doc.frontmatter,
+    }
+  },
+  head: ({ loaderData }) => {
+    if (!loaderData) return {}
+    const { frontmatter } = loaderData
+    const title = frontmatter?.title ?? "Component"
+    const description =
+      frontmatter?.description ?? "A beautifully crafted component by Kiton UI."
+
+    return {
+      meta: [
+        { title: `${title} — Kiton UI` },
+        { name: "description", content: description },
+        { property: "og:title", content: `${title} — Kiton UI` },
+        { property: "og:description", content: description },
+        { name: "twitter:title", content: `${title} — Kiton UI` },
+        { name: "twitter:description", content: description },
+      ],
+    }
   },
   component: ComponentDetailPage,
 })
 
 function ComponentDetailPage() {
-  const { componentName } = Route.useParams()
-  const DocComponent = DOCS_MAP[componentName]
+  const { slug, frontmatter } = Route.useLoaderData()
+
+  const LazyDoc = getLazyComponentDoc(slug)
+  const allSlugs = getComponentSlugs()
+  const currentIndex = allSlugs.indexOf(slug)
+  const prevSlug = currentIndex > 0 ? allSlugs[currentIndex - 1] : null
+  const nextSlug =
+    currentIndex !== -1 && currentIndex < allSlugs.length - 1
+      ? allSlugs[currentIndex + 1]
+      : null
 
   return (
     <main className="min-h-screen py-6 sm:py-8">
-      <Section className="space-y-6">
-        <Breadcrumb>
+      <Section>
+        {/* Top Breadcrumb */}
+        <Breadcrumb className="mb-6">
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">Components</BreadcrumbLink>
+              <BreadcrumbLink render={<Link to="/" />}>Components</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbPage className="capitalize">
-                {componentName.replace(/-/g, " ")}
+                {frontmatter?.title ?? slug.replace(/-/g, " ")}
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
 
-        {DocComponent ? (
-          <div className="space-y-6">
-            <DocComponent components={mdxComponents} />
-          </div>
-        ) : (
-          <div className="space-y-3 pt-2">
-            <div className="flex items-center gap-3">
-              <h1 className="font-logo text-3xl font-extrabold tracking-tight text-foreground capitalize sm:text-4xl">
-                {componentName.replace(/-/g, " ")}
-              </h1>
-              <span className="rounded-full border border-primary/20 bg-primary/10 px-2.5 py-0.5 font-mono text-xs font-medium text-primary">
-                registry:ui
-              </span>
+        {/* Two-column layout: Content + TOC */}
+        <div className="flex gap-12 xl:gap-16">
+          {/* Main content */}
+          <article className="min-w-0 flex-1 space-y-6">
+            {/* Header section */}
+            <div className="space-y-3 pb-2">
+              <div className="flex flex-wrap items-center gap-3">
+                <h1 className="font-logo text-3xl font-extrabold tracking-tight text-foreground capitalize sm:text-4xl">
+                  {frontmatter?.title ?? slug.replace(/-/g, " ")}
+                </h1>
+                {frontmatter?.badge && (
+                  <span className="rounded-full border border-primary/20 bg-primary/10 px-2.5 py-0.5 font-mono text-xs font-medium text-primary">
+                    {frontmatter.badge}
+                  </span>
+                )}
+              </div>
+              {frontmatter?.description && (
+                <p className="max-w-3xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+                  {frontmatter.description}
+                </p>
+              )}
             </div>
-            <p className="max-w-3xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Documentation coming soon.
-            </p>
-          </div>
-        )}
+
+            {/* MDX Body */}
+            {LazyDoc ? (
+              <Suspense
+                fallback={
+                  <div className="flex h-48 w-full items-center justify-center text-sm text-muted-foreground">
+                    <span className="animate-pulse">Loading documentation...</span>
+                  </div>
+                }
+              >
+                <LazyDoc components={mdxComponents} />
+              </Suspense>
+            ) : (
+              <div className="space-y-3 pt-2">
+                <p className="max-w-3xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+                  Documentation coming soon.
+                </p>
+              </div>
+            )}
+
+            {/* Bottom Pagination Links */}
+            <nav
+              aria-label="Documentation pagination"
+              className="flex items-center justify-between border-t border-border/40 pt-8 mt-12"
+            >
+              {prevSlug ? (
+                <Link
+                  to="/components/$componentName"
+                  params={{ componentName: prevSlug }}
+                  className="group flex flex-col items-start gap-1 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <span className="flex items-center gap-1 text-xs text-muted-foreground/70">
+                    <ChevronLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
+                    Previous
+                  </span>
+                  <span className="font-semibold text-foreground capitalize">
+                    {prevSlug.replace(/-/g, " ")}
+                  </span>
+                </Link>
+              ) : (
+                <div />
+              )}
+
+              {nextSlug ? (
+                <Link
+                  to="/components/$componentName"
+                  params={{ componentName: nextSlug }}
+                  className="group flex flex-col items-end gap-1 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors ml-auto text-right"
+                >
+                  <span className="flex items-center gap-1 text-xs text-muted-foreground/70">
+                    Next
+                    <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                  </span>
+                  <span className="font-semibold text-foreground capitalize">
+                    {nextSlug.replace(/-/g, " ")}
+                  </span>
+                </Link>
+              ) : (
+                <div />
+              )}
+            </nav>
+          </article>
+
+          {/* TOC sidebar — only visible on xl+ */}
+          <aside className="hidden xl:block xl:w-56 xl:shrink-0">
+            <div className="sticky top-24">
+              <TableOfContents />
+            </div>
+          </aside>
+        </div>
       </Section>
     </main>
   )

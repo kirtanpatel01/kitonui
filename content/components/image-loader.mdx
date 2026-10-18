@@ -1,32 +1,34 @@
 ---
 title: Image Loader
-description: An interactive canvas-based pixel grid image generation loader effect.
+description: An interactive canvas-based pixel grid image generation loader effect with custom colors, easing, and typography.
+badge: registry:ui
 ---
 
-import ImageLoaderExample from "@/registry/examples/image-loader-example"
-
-# Image Loader
-
-An interactive canvas-based pixel grid image generation loader effect with custom colors, easing, and typography.
-
-<ImageLoaderExample />
+<ComponentPreview name="image-loader" />
 
 ## Installation
 
-<Tabs defaultValue="cli" className="w-full">
-  <TabsList>
-    <TabsTrigger value="cli">CLI</TabsTrigger>
-    <TabsTrigger value="manual">Manual</TabsTrigger>
-  </TabsList>
-  <TabsContent value="cli" className="mt-4">
-    <CodeBlockCommand command="npx shadcn add kirtanpatel01/kitonui/image-loader" />
-  </TabsContent>
-  <TabsContent value="manual" className="mt-4 space-y-4">
-    <p>1. Copy and paste the following component code into your project:</p>
-    <CodeBlock componentName="image-loader" path="components/ui/image-loader.tsx" />
-    <p>2. Ensure you have the <code>cn</code> helper configured in <code>@/lib/utils</code>.</p>
-  </TabsContent>
-</Tabs>
+<CodeBlockCommand command="npx shadcn add kirtanpatel01/kitonui/image-loader" />
+
+### Manual Installation
+
+<Steps>
+  <Step>
+
+    #### Copy the component
+
+    <ComponentSource name="image-loader" />
+
+  </Step>
+
+  <Step>
+
+    #### Add utilities
+
+    Ensure you have the `cn` helper configured in `@/lib/utils`.
+
+  </Step>
+</Steps>
 
 ## Usage
 
@@ -46,3 +48,17 @@ export default function Demo() {
   )
 }
 ```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | `"GENERATING"` | Overlay label text rendered above the pixel grid |
+| `effect` | `"scale-wave" \| "fade" \| "slide"` | `"scale-wave"` | Animation effect for the pixel dissolve |
+| `gridSize` | `number` | `24` | Number of pixel columns in the canvas grid |
+| `duration` | `number` | `2000` | Total animation duration in milliseconds |
+| `className` | `string` | — | Additional class names for the outer container |
+
+<Callout type="info" title="CORS Requirement">
+  The image must allow cross-origin resource sharing (CORS). If you pass an image that blocks CORS, the canvas color extraction will silently fall back to the default palette.
+</Callout>

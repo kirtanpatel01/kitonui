@@ -7,6 +7,8 @@ import tailwindcss from "@tailwindcss/vite"
 import mdx from "@mdx-js/rollup"
 import remarkFrontmatter from "remark-frontmatter"
 import remarkMdxFrontmatter from "remark-mdx-frontmatter"
+import remarkGfm from "remark-gfm"
+import rehypeSlug from "rehype-slug"
 
 import path from "node:path"
 import { fileURLToPath } from "node:url"
@@ -25,7 +27,8 @@ const config = defineConfig({
   plugins: [
     devtools(),
     mdx({
-      remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
+      remarkPlugins: [remarkGfm, remarkFrontmatter, remarkMdxFrontmatter],
+      rehypePlugins: [rehypeSlug],
     }),
     tailwindcss(),
     tanstackStart(),
