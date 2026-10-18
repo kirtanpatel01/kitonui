@@ -19,20 +19,61 @@
       ]
     },
     {
-      "name": "button",
+      "name": "pulse-radar",
       "type": "registry:ui",
-      "title": "Button",
-      "description": "A customizable button component built on Base UI primitives.",
-      "dependencies": [
-        "@base-ui/react",
-        "class-variance-authority",
-        "cn"
-      ],
+      "title": "Pulse Radar",
+      "description": "Tactical scanning radar with sweep sweeps, ping blips, and target telemetry.",
+      "dependencies": ["motion"],
       "devDependencies": [],
       "registryDependencies": [],
       "files": [
         {
-          "path": "src/components/ui/button.tsx",
+          "path": "registry/components/pulse-radar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "morphing-dock",
+      "type": "registry:ui",
+      "title": "Morphing Dock",
+      "description": "Adaptive macOS-grade dock with magnetic cursor influence, icon expansion, and fluid tooltips.",
+      "dependencies": ["motion", "lucide-react"],
+      "devDependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/components/morphing-dock.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "glyph-scrambler",
+      "type": "registry:ui",
+      "title": "Glyph Scrambler",
+      "description": "Deterministic matrix decryption text reveal with customizable character sets and scramble rates.",
+      "dependencies": [],
+      "devDependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/components/glyph-scrambler.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "prism-card",
+      "type": "registry:ui",
+      "title": "Prism Card",
+      "description": "High-fidelity card container with mouse-reactive holographic specular sheen and hairline border lighting.",
+      "dependencies": [],
+      "devDependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/components/prism-card.tsx",
           "type": "registry:ui"
         }
       ]

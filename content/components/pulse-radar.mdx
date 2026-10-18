@@ -1,0 +1,77 @@
+---
+title: Pulse Radar
+description: A precision spatial monitor for distributed edge clusters with continuous sweep beam, node hit detection, and interactive ping latency telemetry.
+badge: registry:ui
+---
+
+<ComponentPreview name="pulse-radar" />
+
+## Installation
+
+<CodeBlockCommand command="npx shadcn add kirtanpatel01/kitonui/pulse-radar" />
+
+### Manual Installation
+
+<Steps>
+  <Step>
+
+    #### Copy the component source
+
+    <ComponentSource name="pulse-radar" />
+
+  </Step>
+
+  <Step>
+
+    #### Install dependencies
+
+    Ensure you have `motion` and `lucide-react` installed.
+
+    <CodeBlockCommand command="npm install motion lucide-react" />
+
+  </Step>
+
+  <Step>
+
+    #### Verify utilities
+
+    Ensure `@/lib/utils` exports `cn`.
+
+  </Step>
+</Steps>
+
+## Usage
+
+```tsx
+import { PulseRadar } from "@/components/ui/pulse-radar"
+
+export default function Demo() {
+  return (
+    <div className="flex justify-center p-8">
+      <PulseRadar
+        sweepSpeed={5}
+        accentColor="emerald"
+        targets={[
+          { id: "fra1", x: 42, y: 32, label: "fra1-edge", region: "Frankfurt", status: "operational", latency: "14ms" },
+          { id: "iad1", x: 28, y: 46, label: "iad1-edge", region: "Ashburn", status: "operational", latency: "28ms" },
+        ]}
+        onPing={(coords) => console.log("Probed coordinate", coords)}
+      />
+    </div>
+  )
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `targets` | `RadarTarget[]` | `[]` | Edge node targets with coordinates, region, latency, and status |
+| `sweepSpeed` | `number` | `5` | Rotation period in seconds per 360-degree sweep |
+| `rings` | `number` | `4` | Concentric range measurement rings |
+| `accentColor` | `"emerald" \| "cyan" \| "amber" \| "violet"` | `"emerald"` | System health accent color |
+| `showCardinals` | `boolean` | `true` | Degree orientation indicators |
+| `showGrid` | `boolean` | `true` | Crosshair grid lines |
+| `interactive` | `boolean` | `true` | Enables click-to-probe coordinate deployment |
+| `onPing` | `(coords: { x: number; y: number }) => void` | — | Fired when a user clicks on the radar surface |
+| `onTargetClick` | `(target: RadarTarget) => void` | — | Fired when a node blip is clicked |

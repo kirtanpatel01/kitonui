@@ -1,0 +1,80 @@
+---
+title: Morphing Dock
+description: A floating navigation bar with magnetic proximity scaling, spring physics, keyboard shortcuts, and morphing layout indicator pills.
+badge: registry:ui
+---
+
+<ComponentPreview name="morphing-dock" />
+
+## Installation
+
+<CodeBlockCommand command="npx shadcn add kirtanpatel01/kitonui/morphing-dock" />
+
+### Manual Installation
+
+<Steps>
+  <Step>
+
+    #### Copy the component source
+
+    <ComponentSource name="morphing-dock" />
+
+  </Step>
+
+  <Step>
+
+    #### Install dependencies
+
+    Ensure you have `motion` and `lucide-react` installed.
+
+    <CodeBlockCommand command="npm install motion lucide-react" />
+
+  </Step>
+
+  <Step>
+
+    #### Verify utilities
+
+    Ensure `@/lib/utils` exports `cn`.
+
+  </Step>
+</Steps>
+
+## Usage
+
+```tsx
+import { MorphingDock } from "@/components/ui/morphing-dock"
+import { Layers, Command, Terminal, Sliders } from "lucide-react"
+
+const items = [
+  { id: "issues", label: "Issues", icon: <Layers className="h-4 w-4" />, shortcut: "⌘1" },
+  { id: "command", label: "Command Menu", icon: <Command className="h-4 w-4" />, shortcut: "⌘K" },
+  { id: "term", label: "Terminal", icon: <Terminal className="h-4 w-4" /> },
+  { id: "sep", label: "", icon: null, isSeparator: true },
+  { id: "settings", label: "Settings", icon: <Sliders className="h-4 w-4" /> },
+]
+
+export default function Demo() {
+  return (
+    <div className="flex justify-center p-12">
+      <MorphingDock
+        items={items}
+        magnification={1.35}
+        distance={110}
+        onSelect={(item) => console.log("Selected", item.id)}
+      />
+    </div>
+  )
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `items` | `DockItemData[]` | Required | Array of navigation items, shortcuts, badges, or separators |
+| `defaultActiveId` | `string` | First item | ID of the initially active item |
+| `magnification` | `number` | `1.35` | Peak scale factor when cursor is centered over an icon |
+| `distance` | `number` | `110` | Proximity range in pixels where cursor scaling activates |
+| `direction` | `"top" \| "bottom"` | `"bottom"` | Tooltip orientation |
+| `onSelect` | `(item: DockItemData) => void` | — | Callback fired when an item is clicked |

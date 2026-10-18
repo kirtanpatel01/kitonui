@@ -1,0 +1,74 @@
+---
+title: Glyph Scrambler
+description: A monospace text scrambler and character cascade with directional reveals, configurable symbol pools, and subtle opacity transitions.
+badge: registry:ui
+---
+
+<ComponentPreview name="glyph-scrambler" />
+
+## Installation
+
+<CodeBlockCommand command="npx shadcn add kirtanpatel01/kitonui/glyph-scrambler" />
+
+### Manual Installation
+
+<Steps>
+  <Step>
+
+    #### Copy the component source
+
+    <ComponentSource name="glyph-scrambler" />
+
+  </Step>
+
+  <Step>
+
+    #### Verify utilities
+
+    Ensure `@/lib/utils` exports `cn`.
+
+  </Step>
+</Steps>
+
+## Usage
+
+```tsx
+import { GlyphScrambler } from "@/components/ui/glyph-scrambler"
+
+export default function Demo() {
+  return (
+    <div className="flex flex-col items-center gap-6 p-8">
+      {/* Hover trigger */}
+      <GlyphScrambler
+        text="p99: 14.2ms across 28 regions"
+        glyphs="technical"
+        trigger="hover"
+        className="text-lg font-mono font-medium"
+      />
+
+      {/* Auto-cycling telemetry */}
+      <GlyphScrambler
+        text={["0 errors reported", "cache hit: 99.2%", "deploy verified"]}
+        glyphs="hex"
+        trigger="auto"
+        revealDirection="center-out"
+        cycleInterval={3000}
+        duration={800}
+      />
+    </div>
+  )
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string \| string[]` | Required | Target text or array of strings to cycle through |
+| `glyphs` | `keyof typeof GLYPH_SETS \| string` | `"technical"` | Character set (`alphanumeric`, `hex`, `symbols`, `technical`, `binary`) |
+| `trigger` | `"mount" \| "hover" \| "click" \| "auto"` | `"hover"` | Trigger mechanism for the scramble sequence |
+| `speed` | `number` | `28` | Milliseconds between character flips |
+| `duration` | `number` | `800` | Total duration in milliseconds for the complete string to lock |
+| `cycleInterval` | `number` | `3500` | Delay between phrase transitions in `auto` mode |
+| `revealDirection` | `"left-to-right" \| "right-to-left" \| "random" \| "center-out"` | `"left-to-right"` | Order in which characters resolve |
+| `onComplete` | `(text: string) => void` | — | Callback fired when the string has resolved |
