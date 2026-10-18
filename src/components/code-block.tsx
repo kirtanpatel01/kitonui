@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import { codeToHtml } from "shiki"
 
 import { cn } from "@/lib/utils"
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import { CopyButton } from "@/components/copy-button"
 import { useTheme } from "@/components/theme-provider"
 
@@ -116,7 +116,7 @@ export function CodeBlock({
   return (
     <div
       className={cn(
-        "flex min-w-0 flex-1 flex-col gap-1 overflow-hidden rounded-[20px] border border-primary/30 bg-primary/20 p-2 pt-1 shadow-[inset_0_0_8px_oklch(from_var(--primary)_l_c_h/0.6)]",
+        "flex min-w-0 flex-col gap-1 overflow-hidden rounded-[20px] border border-primary/30 bg-primary/20 p-2 pt-1 shadow-[inset_0_0_8px_oklch(from_var(--primary)_l_c_h/0.6)]",
         className
       )}
       {...props}
@@ -137,23 +137,21 @@ export function CodeBlock({
       </div>
 
       {/* Code Content */}
-      <div className="relative m-0 flex max-h-[460px] flex-1 flex-col overflow-hidden rounded-[12px] bg-background shadow-sm shadow-primary/30">
-        <div className="h-full w-full bg-muted/5">
-          <ScrollArea className="h-full w-full rounded-[12px] text-left [&_pre]:!m-0 [&_pre]:!bg-transparent [&_pre]:!p-4">
+      <div className="relative m-0 flex max-h-[460px] flex-col overflow-hidden rounded-[12px] bg-background shadow-sm shadow-primary/30">
+        <ScrollArea className="h-full max-h-[460px] w-full text-left [&_pre]:!m-0 [&_pre]:!bg-transparent">
+          <div className="p-3 sm:p-4">
             {highlightedCode ? (
               <div
-                className="w-fit min-w-full font-mono text-xs leading-relaxed sm:text-[13px]"
+                className="w-fit min-w-full font-mono text-xs leading-relaxed sm:text-sm"
                 dangerouslySetInnerHTML={{ __html: highlightedCode }}
               />
             ) : (
-              <pre className="font-mono text-xs leading-relaxed whitespace-pre text-muted-foreground sm:text-[13px]">
+              <pre className="font-mono text-xs leading-relaxed whitespace-pre text-muted-foreground sm:text-sm">
                 <code>{code}</code>
               </pre>
             )}
-            <ScrollBar orientation="horizontal" />
-            <ScrollBar orientation="vertical" />
-          </ScrollArea>
-        </div>
+          </div>
+        </ScrollArea>
       </div>
     </div>
   )

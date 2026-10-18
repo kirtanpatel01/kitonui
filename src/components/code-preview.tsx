@@ -1,7 +1,7 @@
 import * as React from "react"
 import { useState, useEffect } from "react"
 import { codeToHtml } from "shiki"
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import { CopyButton } from "@/components/copy-button"
 import { cn } from "cn"
 
@@ -83,7 +83,7 @@ export function CodePreview({
   return (
     <div
       className={cn(
-        "flex min-w-0 flex-1 flex-col gap-2 overflow-hidden rounded-[20px] border border-primary/30 bg-primary/20 p-2 shadow-[inset_0_0_8px_oklch(from_var(--primary)_l_c_h/0.6)]",
+        "flex min-w-0 flex-col gap-2 overflow-hidden rounded-[20px] border border-primary/30 bg-primary/20 p-2 shadow-[inset_0_0_8px_oklch(from_var(--primary)_l_c_h/0.6)]",
         className
       )}
       {...props}
@@ -133,16 +133,23 @@ export function CodePreview({
         </div>
       </div>
 
-      <div className="relative m-0 flex min-h-[360px] flex-1 flex-col overflow-hidden rounded-[12px] bg-background shadow-sm shadow-primary/30 sm:min-h-[460px] lg:min-h-[550px]">
+      <div
+        className={cn(
+          "relative m-0 flex flex-col overflow-hidden rounded-[12px] bg-background shadow-sm shadow-primary/30",
+          activeTab === "preview"
+            ? "min-h-[360px] sm:min-h-[460px] lg:min-h-[550px] flex-1"
+            : "h-[450px] sm:h-[500px] lg:h-[550px] max-h-[450px] sm:max-h-[500px] lg:max-h-[550px]"
+        )}
+      >
         {activeTab === "preview" ? (
           <div className="flex h-full w-full flex-1 items-center justify-center p-4">
             {content}
           </div>
         ) : (
           rawCode && (
-            <div className="h-[420px] w-full flex-1 overflow-hidden sm:h-[500px] lg:h-full lg:max-h-192">
-              <div className="h-full w-full bg-muted/5">
-                <ScrollArea className="h-full w-full rounded-[12px] text-left [&_pre]:!m-0 [&_pre]:!bg-transparent [&_pre]:!p-4 sm:[&_pre]:!p-6">
+            <div className="h-full w-full min-h-0 flex-1 overflow-hidden">
+              <ScrollArea className="h-full w-full min-h-0 bg-muted/5 text-left [&_pre]:!m-0 [&_pre]:!bg-transparent">
+                <div className="p-4 sm:p-6">
                   {highlightedCode ? (
                     <div
                       className="w-fit min-w-full font-mono text-xs leading-relaxed sm:text-[13px]"
@@ -153,9 +160,8 @@ export function CodePreview({
                       <code>{rawCode}</code>
                     </pre>
                   )}
-                  <ScrollBar orientation="horizontal" />
-                </ScrollArea>
-              </div>
+                </div>
+              </ScrollArea>
             </div>
           )
         )}

@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo } from "react"
+import { useMemo, useId } from "react"
 import { ScrollArea } from "@base-ui/react/scroll-area"
 import { useAtom } from "jotai"
 import { atomWithStorage } from "jotai/utils"
@@ -65,6 +65,11 @@ export type CodeBlockCommandProps = {
    * Command to execute with bun package manager.
    */
   bun?: string
+
+  /**
+   * Additional CSS class names.
+   */
+  className?: string
 
   /**
    * Callback invoked when a command is successfully copied to clipboard.
@@ -165,9 +170,17 @@ export function CodeBlockCommand({
   yarn,
   npm,
   bun,
+  className,
   onCopySuccess,
   onCopyError,
 }: CodeBlockCommandProps) {
+  const reactId = useId()
+  const instanceId = useMemo(() => {
+    if (command) {
+      return `cmd-${command.replace(/[^a-zA-Z0-9_-]/g, "_")}`
+    }
+    return `pm-${reactId.replace(/[^a-zA-Z0-9_-]/g, "")}`
+  }, [command, reactId])
   const [packageManager, setPackageManager] = usePackageManager()
 
   const converted = useMemo(() => {
@@ -194,10 +207,8 @@ export function CodeBlockCommand({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-xl border-none shadow-none transition-colors duration-200",
-        // Self-contained package manager variables: darker & high contrast in light mode, original vibrant tones in dark mode
-        "[--pnpm-color:#a65f00] dark:[--pnpm-color:#fef08a] dark:[--pnpm-bg:rgba(248,171,0,0.12)] dark:[--pnpm-header-bg:rgba(248,171,0,0.08)] dark:[--pnpm-content-bg:rgba(248,171,0,0.16)]",
-        "[--npm-color:#991b1b] dark:[--npm-color:#ff9999] dark:[--npm-bg:rgba(203,56,55,0.12)] dark:[--npm-header-bg:rgba(203,56,55,0.08)] dark:[--npm-content-bg:rgba(203,56,55,0.16)]",
+        "w-fit max-w-full relative overflow-hidden rounded-xl border-none shadow-none transition-colors duration-200",
+        className,
         "[--bun-color:#6c4015] dark:[--bun-color:#fbf0df] dark:[--bun-indicator:#fbf0df] dark:[--bun-bg:rgba(251,240,223,0.10)] dark:[--bun-header-bg:rgba(251,240,223,0.06)] dark:[--bun-content-bg:rgba(251,240,223,0.15)]",
         "[--yarn-color:#16658a] dark:[--yarn-color:#a5d8f3] dark:[--yarn-bg:rgba(44,142,187,0.12)] dark:[--yarn-header-bg:rgba(44,142,187,0.08)] dark:[--yarn-content-bg:rgba(44,142,187,0.16)]"
       )}
@@ -253,7 +264,9 @@ export function CodeBlockCommand({
                   {key}
                   {isSelected && (
                     <motion.div
-                      layoutId="active-tab-indicator-line"
+                      initial={false}
+                      layout="position"
+                      layoutId={`active-tab-indicator-line-${instanceId}`}
                       className="absolute inset-x-0 bottom-0 h-0.5 transition-colors duration-200"
                       style={{
                         backgroundColor: currentTheme.indicator,
@@ -262,6 +275,7 @@ export function CodeBlockCommand({
                         type: "spring",
                         stiffness: 380,
                         damping: 30,
+                        y: { duration: 0 },
                       }}
                     />
                   )}

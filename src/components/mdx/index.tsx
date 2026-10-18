@@ -121,7 +121,7 @@ export const mdxComponents = {
         codeText.startsWith("npm ") ||
         codeText.startsWith("bun ")
       ) {
-        return <div className="my-4"><CodeBlockCommand command={codeText} /></div>
+        return <CodeBlockCommand command={codeText} className="my-4" />
       }
 
       return <CodeBlock code={codeText} lang={lang} className="my-4" />
@@ -132,8 +132,8 @@ export const mdxComponents = {
   TabsList,
   TabsTrigger,
   TabsContent,
-  CodeBlockCommand,
   CodeBlock,
+  CodeBlockCommand,
   CodePreview,
   ComponentPreview,
   ComponentSource,
