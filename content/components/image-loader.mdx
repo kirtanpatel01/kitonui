@@ -23,9 +23,11 @@ badge: registry:ui
 
   <Step>
 
-    #### Add utilities
+    #### Install dependencies
 
-    Ensure you have the `cn` helper configured in `@/lib/utils`.
+    Install the `cn` package:
+
+    <CodeBlockCommand command="npm install cn" />
 
   </Step>
 </Steps>
@@ -53,12 +55,27 @@ export default function Demo() {
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `text` | `string` | `"GENERATING"` | Overlay label text rendered above the pixel grid |
-| `effect` | `"scale-wave" \| "fade" \| "slide"` | `"scale-wave"` | Animation effect for the pixel dissolve |
-| `gridSize` | `number` | `24` | Number of pixel columns in the canvas grid |
-| `duration` | `number` | `2000` | Total animation duration in milliseconds |
-| `className` | `string` | — | Additional class names for the outer container |
+| `text` | `string` | — | Overlay label text rendered into the pixel grid in pixel typography |
+| `effect` | `"scale-wave" \| "shimmer" \| "wave" \| "none"` | `"shimmer"` | Horizontal animation wave effect across the band |
+| `colors` | `readonly [string, string]` | `["var(--color-blue-300)", "var(--color-blue-600)"]` | Fallback or custom gradient color palette `[from, to]` |
+| `cellSize` | `number` | `5` | Size of each pixel square cell in pixels |
+| `gap` | `number` | `2` | Space between pixel cells in pixels |
+| `bandHeight` | `number` | `48` | Height of the scanning band in pixels |
+| `duration` | `number` | `4000` | Cycle duration in milliseconds for the band traverse |
+| `waveAmplitude` | `number` | `12` | Vertical bulge displacement in pixels for `"wave"` effect |
+| `scaleAmplitude` | `number` | `0.75` | Scale multiplier for cells in `"scale-wave"` effect |
+| `textLetterSpacing` | `number` | — | Horizontal space between pixel characters in pixels |
+| `textWordSpacing` | `number` | — | Horizontal space between words in pixels |
+| `overlayOpacity` | `number` | `0.3` | Opacity of the background curtain overlay |
+| `overlayExitDuration`| `number` | `700` | Fade-out duration in ms when the band reaches image edges |
+| `easing` | `string \| [number, number, number, number] \| function` | `"ease-in-out"` | Easing preset or cubic-bezier curve |
+| `className` | `string` | — | Additional class names applied to the canvas element |
 
 <Callout type="info" title="CORS Requirement">
-  The image must allow cross-origin resource sharing (CORS). If you pass an image that blocks CORS, the canvas color extraction will silently fall back to the default palette.
+  When automatic color extraction is used, the image must allow cross-origin resource sharing (`crossOrigin="anonymous"`). If the image blocks CORS, the canvas color extraction automatically falls back to the configured `colors` prop.
 </Callout>
+
+## Credits
+
+This component is originally based on <LinkPreview url="https://ui.aceternity.com/components/image-generation-loader" className="font-semibold text-primary">Image Generation Loader</LinkPreview> by <LinkPreview url="https://ui.aceternity.com" className="font-semibold text-primary">Aceternity UI</LinkPreview>, with custom modifications and enhancements added.
+

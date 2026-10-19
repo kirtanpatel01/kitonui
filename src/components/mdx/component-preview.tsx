@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { cn } from "@/lib/utils"
+import { cn } from "cn"
 import { CodePreview } from "@/components/code-preview"
 import {
   getRegistryComponentCode,
@@ -13,12 +13,14 @@ export interface ComponentPreviewProps
   extends React.HTMLAttributes<HTMLDivElement> {
   name: string
   align?: "center" | "start" | "end"
+  transitionDuration?: number
 }
 
 export function ComponentPreview({
   name,
   className,
   align = "center",
+  transitionDuration,
   ...props
 }: ComponentPreviewProps) {
   const ExampleComponent = getRegistryExampleComponent(name)
@@ -29,6 +31,7 @@ export function ComponentPreview({
       <CodePreview
         componentName={name}
         code={code}
+        transitionDuration={transitionDuration}
         preview={
           ExampleComponent ? (
             <React.Suspense

@@ -4,7 +4,7 @@ import type { ComponentProps } from "react"
 import { CheckIcon, CircleXIcon, CopyIcon } from "lucide-react"
 import { motion } from "motion/react"
 
-import { cn } from "@/lib/utils"
+import { cn } from "cn"
 import type { CopyState } from "@/hooks/use-copy-to-clipboard"
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard"
 import { Button } from "@/components/ui/button"

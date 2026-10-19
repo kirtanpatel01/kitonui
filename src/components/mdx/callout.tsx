@@ -1,5 +1,5 @@
 import * as React from "react"
-import { cn } from "@/lib/utils"
+import { cn } from "cn"
 import { InfoIcon, AlertTriangleIcon, CheckCircle2Icon } from "lucide-react"
 
 export interface CalloutProps extends React.HTMLAttributes<HTMLDivElement> {

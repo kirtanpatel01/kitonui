@@ -3,7 +3,7 @@
 import * as React from "react"
 import { useRef, useState, createContext, useContext } from "react"
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "motion/react"
-import { cn } from "@/lib/utils"
+import { cn } from "cn"
 
 export interface DockItemData {
   id: string

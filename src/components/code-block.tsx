@@ -4,7 +4,7 @@ import * as React from "react"
 import { useEffect, useState } from "react"
 import { codeToHtml } from "shiki"
 
-import { cn } from "@/lib/utils"
+import { cn } from "cn"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { CopyButton } from "@/components/copy-button"
 import { useTheme } from "@/components/theme-provider"

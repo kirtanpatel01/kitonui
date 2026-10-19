@@ -7,7 +7,7 @@ import { atomWithStorage } from "jotai/utils"
 import { TerminalIcon, TextAlignStartIcon } from "lucide-react"
 import { motion } from "motion/react"
 
-import { cn } from "@/lib/utils"
+import { cn } from "cn"
 import {
   Tabs,
   TabsContent,

@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils'
+import { cn } from "cn"
 import React from 'react'
 
 function Section({ children, className }: { children: React.ReactNode, className?: string }) {

@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useEffect, useState } from "react"
-import { cn } from "@/lib/utils"
+import { cn } from "cn"
 
 export interface TocItem {
   id: string
@@ -68,13 +68,9 @@ export function TableOfContents({ className }: { className?: string }) {
     e.preventDefault()
     const element = document.getElementById(id)
     if (element) {
-      const topOffset = 80 // Account for sticky navbar
-      const elementPosition = element.getBoundingClientRect().top
-      const offsetPosition = elementPosition + window.pageYOffset - topOffset
-
-      window.scrollTo({
-        top: offsetPosition,
+      element.scrollIntoView({
         behavior: "smooth",
+        block: "start",
       })
       window.history.pushState(null, "", `#${id}`)
     }

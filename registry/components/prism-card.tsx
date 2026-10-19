@@ -3,7 +3,7 @@
 import * as React from "react"
 import { useRef, useState, useCallback } from "react"
 import { motion, useMotionValue, useSpring, useTransform } from "motion/react"
-import { cn } from "@/lib/utils"
+import { cn } from "cn"
 
 export interface PrismCardProps extends React.HTMLAttributes<HTMLDivElement> {
   maxTilt?: number // maximum rotation degrees (default: 14)

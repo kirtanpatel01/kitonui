@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { cn } from "@/lib/utils"
+import { cn } from "cn"
 import { CodeBlock } from "@/components/code-block"
 import { CodeBlockCommand } from "@/components/code-block-command"
 import { CodePreview } from "@/components/code-preview"
@@ -17,6 +17,7 @@ import { Callout } from "./callout"
 import { Steps, Step } from "./steps"
 import { ComponentPreview } from "./component-preview"
 import { ComponentSource } from "./component-source"
+import { LinkPreview } from "@/components/ui/link-preview"
 
 export {
   Heading,
@@ -25,6 +26,7 @@ export {
   Step,
   ComponentPreview,
   ComponentSource,
+  LinkPreview,
 }
 
 // Master MDX Component Dictionary
@@ -33,6 +35,17 @@ export const mdxComponents = {
   h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => <Heading as="h2" {...props} />,
   h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => <Heading as="h3" {...props} />,
   h4: (props: React.HTMLAttributes<HTMLHeadingElement>) => <Heading as="h4" {...props} />,
+  a: ({ className, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
+    <a
+      className={cn(
+        "font-medium text-primary underline underline-offset-4 decoration-primary/40 hover:decoration-primary transition-colors",
+        className
+      )}
+      target={props.href?.startsWith("http") ? "_blank" : undefined}
+      rel={props.href?.startsWith("http") ? "noopener noreferrer" : undefined}
+      {...props}
+    />
+  ),
   p: ({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => (
     <p
       className={cn("text-base leading-relaxed text-muted-foreground [&:not(:first-child)]:mt-3", className)}
@@ -140,4 +153,5 @@ export const mdxComponents = {
   Steps,
   Step,
   Callout,
+  LinkPreview,
 }
