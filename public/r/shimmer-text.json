@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "shimmer-text",
+  "title": "Shimmer Text",
+  "description": "A bold gradient typography component with a sweeping metallic sheen animation.",
+  "dependencies": [
+    "motion"
+  ],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/components/shimmer-text.tsx",
+      "content": "\"use client\"\n\nimport React from \"react\"\nimport { motion } from \"motion/react\"\nimport { cn } from \"cn\"\n\nexport interface ShimmerTextProps extends React.HTMLAttributes<HTMLDivElement> {\n  /** The text string to display */\n  text?: string\n  children?: React.ReactNode\n  /** Duration of the shimmer animation cycle in seconds (default: 4) */\n  duration?: number\n  /** Additional class names for outer container */\n  className?: string\n  /** Additional class names specifically for the typography */\n  textClassName?: string\n}\n\nexport function ShimmerText({\n  text,\n  children,\n  duration = 4,\n  className,\n  textClassName,\n  ...props\n}: ShimmerTextProps) {\n  const content = text ?? children\n\n  return (\n    <div\n      className={cn(\n        \"relative flex w-full items-center justify-center text-center select-none\",\n        className\n      )}\n      {...props}\n    >\n      <div className=\"relative inline-block\">\n        {/* Base Gradient Text */}\n        <h2\n          className={cn(\n            \"font-logo whitespace-nowrap text-6xl font-extrabold tracking-wider leading-none text-transparent bg-clip-text bg-linear-to-b from-chart-5 dark:from-primary via-chart-2 dark:via-emerald-900 to-chart-1 dark:to-black/50 sm:text-7xl md:text-8xl lg:text-9xl\",\n            textClassName\n          )}\n        >\n          {content}\n        </h2>\n\n        {/* Shimmer Sheen Layer */}\n        <motion.h2\n          key={duration}\n          aria-hidden=\"true\"\n          className={cn(\n            \"pointer-events-none font-logo absolute inset-0 whitespace-nowrap text-6xl font-extrabold tracking-wider leading-none text-transparent bg-clip-text bg-no-repeat bg-[linear-gradient(110deg,transparent_20%,rgba(226,232,240,0.35)_45%,rgba(255,255,255,0.75)_50%,rgba(226,232,240,0.35)_55%,transparent_80%)] dark:bg-[linear-gradient(110deg,transparent_20%,rgba(0,0,0,0.3)_45%,rgba(0,0,0,0.85)_50%,rgba(0,0,0,0.3)_55%,transparent_80%)] bg-[length:250%_100%] sm:text-7xl md:text-8xl lg:text-9xl\",\n            textClassName\n          )}\n          initial={{ backgroundPosition: \"150% 0\" }}\n          animate={{\n            backgroundPosition: [\"150% 0\", \"-150% 0\"],\n          }}\n          transition={{\n            duration,\n            ease: \"easeInOut\",\n            repeat: Infinity,\n            repeatDelay: 0,\n          }}\n        >\n          {content}\n        </motion.h2>\n      </div>\n    </div>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

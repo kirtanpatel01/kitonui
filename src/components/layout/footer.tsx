@@ -4,7 +4,7 @@ const SHIMMER_DURATION = 4
 
 export function Footer() {
   return (
-    <footer className="relative bottom-0 w-full text-center overflow-hidden bg-background pt-16">
+    <footer className="relative bottom-0 w-full text-center overflow-hidden bg-background pt-8">
       <div className="pointer-events-none absolute -bottom-28 left-1/2 h-66 w-full -translate-x-1/2 rounded-full bg-chart-3/20 blur-3xl" />
       {/* <AnimatedLogo /> */}
       <div className="relative block select-none translate-y-[-0.55vw] -mb-[3.5vw]">

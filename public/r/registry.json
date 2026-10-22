@@ -17,6 +17,21 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "shimmer-text",
+      "type": "registry:ui",
+      "title": "Shimmer Text",
+      "description": "A bold gradient typography component with a sweeping metallic sheen animation.",
+      "dependencies": ["motion"],
+      "devDependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/components/shimmer-text.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

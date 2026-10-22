@@ -31,6 +31,7 @@ export function ComponentPreview({
       <CodePreview
         componentName={name}
         code={code}
+        align={align}
         transitionDuration={transitionDuration}
         preview={
           ExampleComponent ? (

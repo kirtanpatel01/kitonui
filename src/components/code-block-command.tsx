@@ -1,16 +1,16 @@
 "use client"
 
-import { useMemo, useId } from "react"
+import { useMemo } from "react"
 import { ScrollArea } from "@base-ui/react/scroll-area"
 import { useAtom } from "jotai"
 import { atomWithStorage } from "jotai/utils"
 import { TerminalIcon, TextAlignStartIcon } from "lucide-react"
-import { motion } from "motion/react"
 
 import { cn } from "cn"
 import {
   Tabs,
   TabsContent,
+  TabsIndicator,
   TabsList,
   TabsTrigger,
 } from "@/components/tabs"
@@ -174,13 +174,6 @@ export function CodeBlockCommand({
   onCopySuccess,
   onCopyError,
 }: CodeBlockCommandProps) {
-  const reactId = useId()
-  const instanceId = useMemo(() => {
-    if (command) {
-      return `cmd-${command.replace(/[^a-zA-Z0-9_-]/g, "_")}`
-    }
-    return `pm-${reactId.replace(/[^a-zA-Z0-9_-]/g, "")}`
-  }, [command, reactId])
   const [packageManager, setPackageManager] = usePackageManager()
 
   const converted = useMemo(() => {
@@ -262,26 +255,15 @@ export function CodeBlockCommand({
                   value={key}
                 >
                   {key}
-                  {isSelected && (
-                    <motion.div
-                      initial={false}
-                      layout="position"
-                      layoutId={`active-tab-indicator-line-${instanceId}`}
-                      className="absolute inset-x-0 bottom-0 h-0.5 transition-colors duration-200"
-                      style={{
-                        backgroundColor: currentTheme.indicator,
-                      }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 380,
-                        damping: 30,
-                        y: { duration: 0 },
-                      }}
-                    />
-                  )}
                 </TabsTrigger>
               )
             })}
+            <TabsIndicator
+              className="bottom-0 left-0 z-10 h-0.5 rounded-none transition-[width,translate] duration-200 ease-out"
+              style={{
+                backgroundColor: currentTheme.indicator,
+              }}
+            />
           </TabsList>
         </ScrollArea.Root>
 

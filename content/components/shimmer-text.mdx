@@ -1,0 +1,54 @@
+---
+title: Shimmer Text
+description: A bold gradient typography component with a sweeping metallic sheen animation.
+---
+
+<ComponentPreview name="shimmer-text" />
+
+## Installation
+
+<CodeBlockCommand command="npx shadcn add kirtanpatel01/kitonui/shimmer-text" />
+
+### Manual Installation
+
+<Steps>
+  <Step>
+
+    #### Copy the component
+
+    <ComponentSource name="shimmer-text" />
+
+  </Step>
+
+  <Step>
+
+    #### Install dependencies
+
+    Install `cn` and `motion`:
+
+    <CodeBlockCommand command="npm install cn motion" />
+
+  </Step>
+</Steps>
+
+## Usage
+
+```tsx
+import { ShimmerText } from "@/components/ui/shimmer-text"
+
+export default function Demo() {
+  return (
+    <ShimmerText duration={4}>
+      KitonUi
+    </ShimmerText>
+  )
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | — | Text to display (can alternatively pass `children`) |
+| `duration` | `number` | `4` | Full cycle animation duration in seconds |
+| `className` | `string` | — | Additional CSS classes for typography, sizing, and colors |

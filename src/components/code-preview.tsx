@@ -22,6 +22,7 @@ export interface CodePreviewProps extends React.HTMLAttributes<HTMLDivElement> {
   defaultTab?: "preview" | "code"
   /** Custom transition duration in seconds for tab resize & crossfade (default: 0.35) */
   transitionDuration?: number
+  align?: "center" | "start" | "end"
   action?: React.ReactNode
   /** Callback invoked on successful copy in code panel */
   onCopySuccess?: (copiedText: string) => void
@@ -36,6 +37,7 @@ export function CodePreview({
   code: manualCode,
   defaultTab = "preview",
   transitionDuration = 0.5,
+  align = "center",
   action,
   onCopySuccess,
   onCopyError,
@@ -204,7 +206,12 @@ export function CodePreview({
           }}
           transition={{ duration: transitionDuration * 0.5, ease: "easeInOut" }}
           className={cn(
-            "flex w-full items-center justify-center p-4 min-h-[360px] sm:min-h-[460px] lg:min-h-[550px]",
+            "flex w-full min-h-[360px] sm:min-h-[460px] lg:min-h-[550px]",
+            align === "end"
+              ? "flex-col justify-end items-center p-4"
+              : align === "start"
+              ? "flex-col justify-start items-center p-4"
+              : "items-center justify-center p-4",
             activeTab !== "preview" && "pointer-events-none absolute inset-x-0 top-0 invisible"
           )}
         >
