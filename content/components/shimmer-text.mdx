@@ -38,7 +38,12 @@ import { ShimmerText } from "@/components/ui/shimmer-text"
 
 export default function Demo() {
   return (
-    <ShimmerText duration={4}>
+    <ShimmerText
+      size="responsive"
+      weight="extrabold"
+      speed={3.5}
+      bevel={true}
+    >
       KitonUi
     </ShimmerText>
   )
@@ -50,5 +55,15 @@ export default function Demo() {
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `text` | `string` | — | Text to display (can alternatively pass `children`) |
-| `duration` | `number` | `4` | Full cycle animation duration in seconds |
-| `className` | `string` | — | Additional CSS classes for typography, sizing, and colors |
+| `as` | `"h1" \| "h2" \| "h3" \| "span" \| "p" \| "div"` | `"h2"` | The HTML tag to render for typography semantics |
+| `size` | `ShimmerTextSize \| string` | `"responsive"` | Preset size (`"sm"` to `"9xl"`, `"responsive"`) or arbitrary CSS font size |
+| `weight` | `ShimmerTextWeight \| number` | `"extrabold"` | Font weight token (`"normal"` to `"black"`) or numeric value |
+| `color` | `string` | `undefined` | Custom base text color, gradient class, or CSS linear-gradient string |
+| `shimmerColor` | `string` | `undefined` | Custom sheen highlight color (e.g. `"#ffffff"`, `"gold"`) or linear-gradient string |
+| `speed` / `duration` | `number` | `4` | Duration of one complete sheen sweep cycle in seconds |
+| `bevel` | `boolean \| number` | `true` | Enables the 3D specular rim contour effect (scaled by 1.006x, or custom numeric ratio) |
+| `angle` | `number` | `110` | Angle in degrees for the sweeping sheen gradient |
+| `spread` | `number` | `60` | Width percentage of the shimmer light beam |
+| `repeatDelay` | `number` | `0` | Delay in seconds between shimmer animation cycles |
+| `className` | `string` | — | Additional CSS classes for the outer container |
+| `textClassName` | `string` | — | Additional CSS classes specifically for the typography layers |
